@@ -7,6 +7,16 @@ export const accountSchema = z.object({ name: z.string().trim().min(1).max(120) 
 export const transactionSchema = z.object({
   type: z.enum(['CREDIT', 'DEBIT']), amount, description: z.string().trim().max(500), reference_id: z.string().trim().min(1).max(120)
 }).strict();
+export const transferSchema = z.object({
+  source_account_id: uuid,
+  destination_account_id: uuid,
+  amount,
+  description: z.string().trim().max(500),
+  reference_id: z.string().trim().min(1).max(120)
+}).strict().refine(
+  ({ source_account_id, destination_account_id }) => source_account_id !== destination_account_id,
+  { message: 'source_account_id and destination_account_id must be different.', path: ['destination_account_id'] }
+);
 export const historySchema = z.object({
   type: z.enum(['CREDIT', 'DEBIT']).optional(), page: z.coerce.number().int().min(0).default(0), limit: z.coerce.number().int().min(1).max(100).default(10)
 }).strict();

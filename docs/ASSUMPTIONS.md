@@ -7,4 +7,4 @@
 - Insufficient funds return 409. History pages are zero-indexed, default to 10, and cap at 100. Equal timestamps break ties by transaction UUID descending.
 - Ledger rows have no mutation routes. This is application-level immutability; a database owner can still issue SQL updates. Production hardening can add revoke privileges/audit triggers.
 - Accounts are not deletable through this API; foreign keys also restrict deletion with ledger history. Authentication/authorization and multi-currency are out of scope.
-- Each transaction locks one account with PostgreSQL `SELECT ... FOR UPDATE`. This is the basis for the stated concurrency guarantees.
+- Each account transaction locks one account with PostgreSQL `SELECT ... FOR UPDATE`. A transfer locks both accounts in UUID order, then writes its debit, credit, and both balance projections in one database transaction. This is the basis for the stated concurrency guarantees.

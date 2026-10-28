@@ -18,6 +18,6 @@ Run unit tests with `npm test`. With a reachable, migrated PostgreSQL database, 
 
 ## Endpoints
 
-`POST /api/v1/accounts`, `GET /api/v1/accounts/:accountId/balance`, `POST /api/v1/accounts/:accountId/transactions`, and `GET /api/v1/accounts/:accountId/transactions`.
+`POST /api/v1/accounts`, `GET /api/v1/accounts/:accountId/balance`, `POST /api/v1/accounts/:accountId/transactions`, `GET /api/v1/accounts/:accountId/transactions`, and `POST /api/v1/transfers`.
 
-See [API reference](docs/API_DOCUMENTATION.md), [architecture](docs/ARCHITECTURE.md), [assumptions](docs/ASSUMPTIONS.md), and the [learning guide](docs/LEARNING_GUIDE.md). Transactions and balance updates are implemented; transfers are deliberately not included. PostgreSQL is required for the documented locking guarantees. The integration suite was not run in this environment because the installed Docker client could not reach a running Docker daemon.
+See [API reference](docs/API_DOCUMENTATION.md), [architecture](docs/ARCHITECTURE.md), [assumptions](docs/ASSUMPTIONS.md), and the [learning guide](docs/LEARNING_GUIDE.md). PostgreSQL is required for the documented locking guarantees. The unit and PostgreSQL integration test suites pass. Integration tests cover account creation, credit/debit operations, duplicate references, insufficient funds, concurrent debits, transaction history, and transfers.

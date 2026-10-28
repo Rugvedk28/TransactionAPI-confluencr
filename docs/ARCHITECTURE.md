@@ -34,6 +34,8 @@ Service->>PG: COMMIT
 
 Any error causes `ROLLBACK`. The account lock makes concurrent balance modifications wait, so the next request reads the committed balance. The unique constraint resolves duplicate references even across processes; its 23505 error is mapped only after the failed transaction has rolled back.
 
+Transfers use the same transaction boundary, lock both accounts by UUID order, verify the source balance, and then write the source debit, destination credit, and both projected balances. Ordering locks prevents two requests transferring in opposite directions from deadlocking; a missing account, insufficient balance, or either ledger insert failing rolls back every transfer write.
+
 ```mermaid
 sequenceDiagram
 participant A as Debit A
