@@ -16,7 +16,15 @@ export const transactionService = {
       if (input.type === 'DEBIT' && current < amount) throw new AppError(409, 'INSUFFICIENT_BALANCE', 'The account does not have sufficient funds.');
       const next = input.type === 'CREDIT' ? current + amount : current - amount;
       await accountRepository.setBalance(db, accountId, next);
-      const transaction = await transactionRepository.create(db, { id: randomUUID(), accountId, amount, ...input, referenceId: input.reference_id });
+      // const transaction = await transactionRepository.create(db, { id: randomUUID(), accountId, amount, ...input, referenceId: input.reference_id });
+      const transaction = await transactionRepository.create(db, {
+      id: randomUUID(),
+      accountId,
+      type: input.type,
+      amount,
+      description: input.description,
+      referenceId: input.reference_id
+    });
       return { transaction, balanceAfter: next };
     });
   },
